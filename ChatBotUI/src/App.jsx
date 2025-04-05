@@ -4,6 +4,7 @@ import ChatForm from "./components/ChatForm";
 import ChatMessage from "./components/ChatMessage";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { API_KEY } from "./google_secret.jsx";
+import NeurologistIcon from "./components/NeurologistIcon.jsx";
 
 // Check if the browser supports SpeechRecognition API (with webkit prefix as a fallback)
 const SpeechRecognition =

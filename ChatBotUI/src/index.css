@@ -25,6 +25,39 @@ body {
   font-weight: 1000;  
 }
 
+.specialists-container {
+  background: #6D4FC2;
+  font-size: 1.31rem;
+  font-weight: 600;
+  display: flex;
+  width: 300px;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.options-list {
+  align-items: center;
+  justify-content: center;
+}
+
+.options-list button {
+  color: #FFF;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: none;
+}
+
+.options-list li {
+  list-style-type: none;
+  padding-left: 0;
+  width: 300px;
+  text-align: center;
+  height: 100px;
+  padding: 50px;
+  font-size: 1.5rem;
+}
+
 #chatbot-toggler {
   position: fixed;
   bottom: 30px;
