@@ -11,7 +11,6 @@ const App = () => {
   const chatBodyRef = useRef();
 
   const generateBotResponse = async (history) => {
-    // Helper function to update chat history
     const updateHistory = (responseText) => {
       setChatHistory(prev => [
         ...prev.filter(msg => msg.text !== "Thinking..."),
@@ -19,34 +18,40 @@ const App = () => {
       ]);
     };
 
-    // Format chat history for Gemini API
-    const formattedHistory = history.map(({ role, text }) => ({
-      role,
-      parts: [{ text }],
-    }));
+    // Add Doctor Mode system instruction
+    const systemPrompt = {
+      role: "user",
+      parts: [
+        {
+          text: "You are now in doctor mode. Respond only with helpful concise, accurate medical information. Assume the user is asking medical-related questions unless stated otherwise, keep it short and you can reply with a question to get further information about the user's symptoms. When you are sure about his/her diagnosis, reply with a medical advice.",
+        },
+      ],
+    };
+
+    const formattedHistory = [
+      systemPrompt,
+      ...history.map(({ role, text }) => ({
+        role,
+        parts: [{ text }],
+      })),
+    ];
 
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     try {
-      // Start a new chat and send user input
       const chat = await model.startChat({ history: formattedHistory });
-      const result = await chat.sendMessage(history.at(-1).text); // Send the latest message
-
-      // Process the response
+      const result = await chat.sendMessage(history.at(-1).text);
       const response = await result.response;
       const responseText = await response.text();
 
-      // Clean and update chat history with the bot's response
       updateHistory(responseText);
-
       console.log(responseText);
     } catch (error) {
       console.error("Error generating response:", error);
     }
   };
 
-  // Autoscroll the chat updates
   useEffect(() => {
     chatBodyRef.current.scrollTo({
       top: chatBodyRef.current.scrollHeight,
@@ -72,31 +77,29 @@ const App = () => {
               <ChatbotIcon />
               <h2 className="logo-text">Chatbot</h2>
             </div>
-            <button 
-              className="material-symbols-rounded">keyboard_arrow_down
-            </button>
+            <button className="material-symbols-rounded">keyboard_arrow_down</button>
           </div>
 
           {/* Body */}
           <div ref={chatBodyRef} className="chat-body">
             <div className="message bot-message">
               <ChatbotIcon />
-              <p className="message-text">boi</p>
+              <p className="message-text">Hello! I'm in doctor mode. Ask me anything medical.</p>
             </div>
 
-          {/* Render the chat history dynamically */}
             {chatHistory.map((chat, index) => (
-              <ChatMessage key={index} chat={chat}/>
+              <ChatMessage key={index} chat={chat} />
             ))}
-            
           </div>
 
           {/* Footer */}
           <div className="chat-footer">
-            {/* generateBotResponse */}
-              <ChatForm chatHistory={chatHistory} setChatHistory={setChatHistory} generateBotResponse={generateBotResponse}/>
+            <ChatForm
+              chatHistory={chatHistory}
+              setChatHistory={setChatHistory}
+              generateBotResponse={generateBotResponse}
+            />
           </div>
-
         </div>
       </div>
     </div>
