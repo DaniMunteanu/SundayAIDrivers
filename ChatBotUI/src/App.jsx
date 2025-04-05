@@ -4,6 +4,7 @@ import ChatForm from "./components/ChatForm";
 import ChatMessage from "./components/ChatMessage";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { API_KEY } from "./google_secret.jsx";
+import NeurologistIcon from "./components/NeurologistIcon.jsx";
 
 const App = () => {
   const [chatHistory, setChatHistory] = useState([]);
@@ -97,6 +98,7 @@ const App = () => {
           {/* Header */}
           <div className="chat-header">
             <div className="header-info">
+              <NeurologistIcon />
               <ChatbotIcon />
               <h2 className="logo-text">Chatbot</h2>
             </div>
