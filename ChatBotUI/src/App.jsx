@@ -20,20 +20,47 @@ const App = () => {
   const [mode, setMode] = useState("default");
   const [recognitionStopped, setRecognitionStopped] = useState(false);
 
+  const getUserLocation = () => {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            resolve({ latitude, longitude });
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+      } else {
+        reject(new Error("Geolocation is not supported by this browser"));
+      }
+    });
+  };
 
+  const getLocationPrompt = async () => {
+    try {
+      const location = await getUserLocation();
+      return `The user's location is latitude: ${location.latitude}, longitude: ${location.longitude}.`;
+    } catch (error) {
+      console.error("Error getting location:", error);
+      return "Location could not be retrieved.";
+    }
+  };
 
   const getInitialPrompt = (mode) => {
     switch (mode) {
       case "pediatrician":
-        return "You are now in pediatrician mode. Respond only with helpful, concise, accurate medical information. Try to keep the answer short and to the point.";
+        return "You are now in pediatrician mode. Respond only with helpful, concise, accurate medical information. Try to keep the answer short and to the point. Also don't bold the text. Whenever the user asks about a location (if the user says show me the closest... consider it as where is) use the latitude and longitude you will get from the next prompt don't try to use or guide them to external sources, give the name of the location followed by the street name and any other important stuff.";
       case "psychologist":
-        return "You are now in psychologist mode. Respond only with helpful, concise, accurate medical information. Try to keep the answer short and to the point.";
+        return "You are now in psychologist mode. Respond only with helpful, concise, accurate medical information. Try to keep the answer short and to the point. Also don't bold the text. Whenever the user asks about a location (if the user says show me the closest... consider it as where is) use the latitude and longitude you will get from the next prompt don't try to use or guide them to external sources, give the name of the location followed by the street name and any other important stuff.";
       case "dermatologist":
-        return "You are now in dermatologist mode. Respond only with helpful, concise, accurate medical information. Try to keep the answer short and to the point.";
+        return "You are now in dermatologist mode. Respond only with helpful, concise, accurate medical information. Try to keep the answer short and to the point. Also don't bold the text. Whenever the user asks about a location (if the user says show me the closest... consider it as where is) use the latitude and longitude you will get from the next prompt don't try to use or guide them to external sources, give the name of the location followed by the street name and any other important stuff.";
       case "dentist":
-        return "You are now in dentist mode. Respond only with helpful, concise, accurate medical information. Try to keep the answer short and to the point.";
+        return "You are now in dentist mode. Respond only with helpful, concise, accurate medical information. Try to keep the answer short and to the point. Also don't bold the text. Whenever the user asks about a location (if the user says show me the closest... consider it as where is) use the latitude and longitude you will get from the next prompt don't try to use or guide them to external sources, give the name of the location followed by the street name and any other important stuff.";
       case "default":
-        return "You are now in general practitioner mode. Respond only with helpful, concise, accurate medical information. Try to keep the answer short and to the point.";    }
+        return "You are now in general practitioner mode. Respond only with helpful, concise, accurate medical information. Try to keep the answer short and to the point. Also don't bold the text. Whenever the user asks about a location (if the user says show me the closest... consider it as where is) use the latitude and longitude you will get from the next prompt don't try to use or guide them to external sources, give the name of the location followed by the street name and any other important stuff.";
+    }
   };
 
   const generateBotResponse = async (history) => {
@@ -48,7 +75,10 @@ const App = () => {
       role: "user",
       parts: [
         {
-          text: getInitialPrompt(mode), // Use the correct mode prompt
+          text: getInitialPrompt(mode), // Mode-specific instructions (like Pediatrician, etc.)
+        },
+        {
+          text: await getLocationPrompt(), // Include the location, hidden from the user
         },
       ],
     };
@@ -65,54 +95,60 @@ const App = () => {
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     try {
+      // Ensure the model starts the chat properly
       const chat = await model.startChat({ history: formattedHistory });
+
+      // Send the message and await the response
       const result = await chat.sendMessage(history.at(-1).text);
       const response = await result.response;
+
+      // Get the response text
       const responseText = await response.text();
       updateHistory(responseText);
       console.log(responseText);
     } catch (error) {
       console.error("Error generating response:", error);
+      // Handle error and update chat with an error message
+      updateHistory("Sorry, something went wrong. Please try again.");
     }
   };
 
   // Start/Stop speech recognition
   const startRecording = () => {
-  if (!SpeechRecognition) {
-    console.error("Speech Recognition API is not supported in this browser.");
-    return;
-  }
+    if (!SpeechRecognition) {
+      console.error("Speech Recognition API is not supported in this browser.");
+      return;
+    }
 
-  const recognition = new SpeechRecognition();
-  recognition.lang = "en-US";
-  recognition.interimResults = true;
-  recognition.maxAlternatives = 1;
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = true;
+    recognition.maxAlternatives = 1;
 
-  recognition.onstart = () => {
-    setIsRecording(true);
-    setRecognitionStopped(false);
-  };
+    recognition.onstart = () => {
+      setIsRecording(true);
+      setRecognitionStopped(false);
+    };
 
-  recognition.onerror = (event) => {
-    console.error("Speech recognition error", event.error);
-    setIsRecording(false);
-    setRecognitionStopped(true);
-  };
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error", event.error);
+      setIsRecording(false);
+      setRecognitionStopped(true);
+    };
 
-  recognition.onresult = (event) => {
-    const lastResult = event.results[event.results.length - 1];
-    const transcript = lastResult[0].transcript;
-    setTranscription(transcript);
-  };
+    recognition.onresult = (event) => {
+      const lastResult = event.results[event.results.length - 1];
+      const transcript = lastResult[0].transcript;
+      setTranscription(transcript);
+    };
 
-  recognition.onend = () => {
-    setIsRecording(false);
-    setRecognitionStopped(true);
-  };
+    recognition.onend = () => {
+      setIsRecording(false);
+      setRecognitionStopped(true);
+    };
 
     recognition.start();
   };
-
 
   useEffect(() => {
     chatBodyRef.current.scrollTo({
@@ -124,16 +160,23 @@ const App = () => {
   useEffect(() => {
     if (transcription && recognitionStopped) {
       console.log("Transcription updated:", transcription);
+
+      // Ensure the latest chat history is used
       setChatHistory((prev) => [
-          ...prev,
-          { role: "user", text: transcription },
-          ]);
-      generateBotResponse([
+        ...prev,
+        { role: "user", text: transcription },
+      ]);
+
+      // Wait for the chat history to be updated before calling generateBotResponse
+      setTimeout(() => {
+        generateBotResponse([
           ...chatHistory,
           { role: "user", text: transcription },
-      ]);
+        ]);
+      }, 0); // Let the state update first
     }
-  }, [transcription, recognitionStopped])
+  }, [transcription, recognitionStopped]);
+
   return (
     <div id="app-container">
       <div id="title-container">
