@@ -1,7 +1,34 @@
+import asyncio
+import websockets
+
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 import numpy as np
 from recommendation import recommend_tests  # Your custom function
+
+connected_clients = set()
+
+async def handler(websocket, path):
+    connected_clients.add(websocket)
+    print("Client connected!")
+
+    try:
+        async for message in websocket:
+            print("Received from React:", message)
+
+            # Respond back to client
+            await websocket.send(f"Got your message: {message}")
+    except websockets.exceptions.ConnectionClosed:
+        print("Client disconnected")
+    finally:
+        connected_clients.remove(websocket)
+
+start_server = websockets.serve(handler, "localhost", 5173)
+
+print("WebSocket server started on ws://localhost:5173")
+asyncio.get_event_loop().run_until_complete(start_server)
+asyncio.get_event_loop().run_forever()
+
 
 # Use GPU if available
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
