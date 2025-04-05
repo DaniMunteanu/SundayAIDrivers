@@ -1,37 +1,57 @@
-import { useEffect, useRef, useState } from "react"
-import ChatbotIcon from "./components/ChatbotIcon"
-import ChatForm from "./components/ChatForm"
-import ChatMessage from "./components/ChatMessage"
-import ReactMarkdown from "react-markdown";
+import { useEffect, useRef, useState } from "react";
+import ChatbotIcon from "./components/ChatbotIcon";
+import ChatForm from "./components/ChatForm";
+import ChatMessage from "./components/ChatMessage";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { API_KEY } from "./google_secret.jsx";
 
 const App = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const [showChatBot, setShowChatBot] = useState(false);
   const chatBodyRef = useRef();
 
-  const [socket, setSocket] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
-
   const generateBotResponse = async (history) => {
-
-    //Helper function to update chat history
+    // Helper function to update chat history
     const updateHistory = (responseText) => {
-      setChatHistory(prev => [...prev.filter(msg => msg.text !== "Thinking..."), {role: "model", text}]);
+      setChatHistory(prev => [
+        ...prev.filter(msg => msg.text !== "Thinking..."),
+        { role: "model", text: responseText },
+      ]);
+    };
+
+    // Format chat history for Gemini API
+    const formattedHistory = history.map(({ role, text }) => ({
+      role,
+      parts: [{ text }],
+    }));
+
+    const genAI = new GoogleGenerativeAI(API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+
+    try {
+      // Start a new chat and send user input
+      const chat = await model.startChat({ history: formattedHistory });
+      const result = await chat.sendMessage(history.at(-1).text); // Send the latest message
+
+      // Process the response
+      const response = await result.response;
+      const responseText = await response.text();
+
+      // Clean and update chat history with the bot's response
+      updateHistory(responseText);
+
+      console.log(responseText);
+    } catch (error) {
+      console.error("Error generating response:", error);
     }
+  };
 
-    console.log(history);
-
-    //Format chat history for API request
-    history = history.map(({role, text}) => ({role, parts: [{text}]}))
-
-  
-    
-  }
-
-  //Autoscroll la chat updates
+  // Autoscroll the chat updates
   useEffect(() => {
-    chatBodyRef.current.scrollTo({top: chatBodyRef.current.scrollHeight, behavior: "smooth"});
+    chatBodyRef.current.scrollTo({
+      top: chatBodyRef.current.scrollHeight,
+      behavior: "smooth",
+    });
   }, [chatHistory]);
 
   return (
@@ -78,10 +98,9 @@ const App = () => {
           </div>
 
         </div>
-
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
