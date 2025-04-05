@@ -3,16 +3,16 @@ import ChatbotIcon from "./components/ChatbotIcon"
 import ChatForm from "./components/ChatForm"
 import ChatMessage from "./components/ChatMessage"
 
-import OpenAI from "openai";
+// import OpenAI from "openai";
 
-const client = new OpenAI();
+// const client = new OpenAI();
 
-const response = await client.responses.create({
-    model: "gpt-4o",
-    input: "Write a one-sentence bedtime story about a unicorn.",
-});
+// const response = await client.responses.create({
+//     model: "gpt-4o",
+//     input: "Write a one-sentence bedtime story about a unicorn.",
+// });
 
-console.log(response.output_text);
+// console.log(response.output_text);
 
 
 const App = () => {
@@ -64,34 +64,34 @@ const App = () => {
     
   }
 
-  useEffect(() => {
-    const ws = new WebSocket("ws://localhost:5173");
-    setSocket(ws);
+  // useEffect(() => {
+  //   const ws = new WebSocket("ws://localhost:5173");
+  //   setSocket(ws);
 
-    ws.onopen = () => {
-      console.log("Connected to Python WebSocket server");
-    };
+  //   ws.onopen = () => {
+  //     console.log("Connected to Python WebSocket server");
+  //   };
 
-    ws.onmessage = (event) => {
-      setMessages(prev => [...prev, `From Python: ${event.data}`]);
-    };
+  //   ws.onmessage = (event) => {
+  //     setMessages(prev => [...prev, `From Python: ${event.data}`]);
+  //   };
 
-    ws.onclose = () => {
-      console.log("Disconnected");
-    };
+  //   ws.onclose = () => {
+  //     console.log("Disconnected");
+  //   };
 
-    return () => {
-      ws.close();
-    };
-  }, []);
+  //   return () => {
+  //     ws.close();
+  //   };
+  // }, []);
 
-  const sendMessage = () => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(input);
-      setMessages(prev => [...prev, `Sent: ${input}`]);
-      setInput("");
-    }
-  };
+  // const sendMessage = () => {
+  //   if (socket && socket.readyState === WebSocket.OPEN) {
+  //     socket.send(input);
+  //     setMessages(prev => [...prev, `Sent: ${input}`]);
+  //     setInput("");
+  //   }
+  // };
 
   //Autoscroll la chat updates
   useEffect(() => {
@@ -134,7 +134,7 @@ const App = () => {
         {/* Footer */}
         <div className="chat-footer">
           {/* generateBotResponse */}
-            <ChatForm chatHistory={chatHistory} setChatHistory={setChatHistory} generateBotResponse={sendMessage}/>
+            <ChatForm chatHistory={chatHistory} setChatHistory={setChatHistory} generateBotResponse={generateBotResponse}/>
         </div>
 
       </div>
