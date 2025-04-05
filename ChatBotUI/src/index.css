@@ -27,8 +27,6 @@ body {
 
 .specialists-container {
   background: #6D4FC2;
-  font-size: 1.31rem;
-  font-weight: 600;
   display: flex;
   width: 300px;
   border-top-right-radius: 12px;
@@ -40,21 +38,24 @@ body {
   justify-content: center;
 }
 
-.options-list button {
+.mode-buttons button {
+  font-size: 2rem;
+  font-weight: 600;
   color: #FFF;
   border: none;
   outline: none;
   cursor: pointer;
   background: none;
+  margin-left: 20px;
 }
 
-.options-list li {
+.mode-buttons li {
   list-style-type: none;
   padding-left: 0;
   width: 300px;
   text-align: center;
   height: 100px;
-  padding: 50px;
+  padding-top: 25px;
   font-size: 1.5rem;
 }
 
@@ -109,6 +110,7 @@ body {
   display: flex;
   gap: 10px;
   align-items: center;
+  justify-content: space-between;
 }
 
 .header-info svg {

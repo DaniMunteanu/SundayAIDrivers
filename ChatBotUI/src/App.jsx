@@ -5,6 +5,10 @@ import ChatMessage from "./components/ChatMessage";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { API_KEY } from "./google_secret.jsx";
 import NeurologistIcon from "./components/NeurologistIcon.jsx";
+import DentistIcon from "./components/DentistIcon.jsx";
+import DermatologistIcon from "./components/DermatologistIcon.jsx";
+import PedriaticianIcon from "./components/PedriaticianIcon.jsx";
+import PsychologistIcon from "./components/PsychologistIcon.jsx";
 
 const App = () => {
   const [chatHistory, setChatHistory] = useState([]);
@@ -79,14 +83,38 @@ const App = () => {
   return (
     <div id="app-container">
       <div id="title-container">
-  <h2 id="app-title">AI Sunday Drivers</h2>
-  <div className="mode-buttons">
-    <button onClick={() => window.location.href = "?mode=dermatologist"}>Doctor</button>
-    <button onClick={() => window.location.href = "?mode=pediatrician"}>Pediatrician</button>
-    <button onClick={() => window.location.href = "?mode=psychologist"}>Psychologist</button>
-    <button onClick={() => window.location.href = "?mode=dentist"}>Dentist</button>
-  </div>
-</div>
+        <h2 id="app-title">AI Sunday Drivers</h2>
+      </div>
+
+        <div className="specialists-container">
+          <ul className="mode-buttons">
+            <li>
+              <div className="header-info">
+                <DermatologistIcon></DermatologistIcon>
+                <button onClick={() => window.location.href = "?mode=dermatologist"}>Dermatologist</button>
+              </div>
+            </li>
+            <li>
+              <div className="header-info">
+                <PedriaticianIcon></PedriaticianIcon>
+                <button onClick={() => window.location.href = "?mode=pediatrician"}>Pediatrician</button>
+              </div>
+            </li>
+            <li>
+              <div className="header-info">
+                <PsychologistIcon></PsychologistIcon>
+                <button onClick={() => window.location.href = "?mode=psychologist"}>Psychologist</button>
+              </div>
+            </li>
+            <li>
+              <div className="header-info">
+                <DentistIcon></DentistIcon>
+                <button onClick={() => window.location.href = "?mode=dentist"}>Dentist</button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      
 
       <div className={`bot-container ${showChatBot ? "show-chatbot" : ""}`}>
         <button onClick={() => setShowChatBot((prev) => !prev)} id="chatbot-toggler">
@@ -98,7 +126,6 @@ const App = () => {
           {/* Header */}
           <div className="chat-header">
             <div className="header-info">
-              <NeurologistIcon />
               <ChatbotIcon />
               <h2 className="logo-text">Chatbot</h2>
             </div>
