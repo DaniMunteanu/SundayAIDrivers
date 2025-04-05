@@ -192,25 +192,25 @@ const App = () => {
             <li>
               <div className="header-info">
                 <DermatologistIcon></DermatologistIcon>
-                <button onClick={() => window.location.href = "?mode=dermatologist"}>Dermatologist</button>
+                <button onClick={() => setMode("dermatologist")}>Dermatologist</button>
               </div>
             </li>
             <li>
               <div className="header-info">
                 <PedriaticianIcon></PedriaticianIcon>
-                <button onClick={() => window.location.href = "?mode=pediatrician"}>Pediatrician</button>
+                <button onClick={() => setMode("pediatrician")}>Pediatrician</button>
               </div>
             </li>
             <li>
               <div className="header-info">
                 <PsychologistIcon></PsychologistIcon>
-                <button onClick={() => window.location.href = "?mode=psychologist"}>Psychologist</button>
+                <button onClick={() => setMode("psychologist")}>Psychologist</button>
               </div>
             </li>
             <li>
               <div className="header-info">
                 <DentistIcon></DentistIcon>
-                <button onClick={() => window.location.href = "?mode=dentist"}>Dentist</button>
+                <button onClick={() => setMode("dentist")}>Dentist</button>
               </div>
             </li>
           </ul>
@@ -218,7 +218,10 @@ const App = () => {
       
 
       <div className={`bot-container ${showChatBot ? "show-chatbot" : ""}`}>
-        <button onClick={() => setShowChatBot((prev) => !prev)} id="chatbot-toggler">
+        <button onClick={() => {
+                  setShowChatBot((prev) => !prev); // Toggle chatbot visibility
+                  setMode("default"); // Set mode to default
+                }} id="chatbot-toggler">
           <span className="material-symbols-rounded">mode_comment</span>
           <span className="material-symbols-rounded">close</span>
         </button>
