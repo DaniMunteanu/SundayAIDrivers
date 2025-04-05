@@ -25,15 +25,15 @@ const App = () => {
   const getInitialPrompt = (mode) => {
     switch (mode) {
       case "pediatrician":
-        return "You are now in pediatrician mode. Respond only with helpful, concise, accurate medical information.";
+        return "You are now in pediatrician mode. Respond only with helpful, concise, accurate medical information. Try to keep the answer short and to the point.";
       case "psychologist":
-        return "You are now in psychologist mode. Respond only with helpful, concise, accurate medical information.";
+        return "You are now in psychologist mode. Respond only with helpful, concise, accurate medical information. Try to keep the answer short and to the point.";
       case "dermatologist":
-        return "You are now in dermatologist mode. Respond only with helpful, concise, accurate medical information.";
+        return "You are now in dermatologist mode. Respond only with helpful, concise, accurate medical information. Try to keep the answer short and to the point.";
       case "dentist":
-        return "You are now in dentist mode. Respond only with helpful, concise, accurate medical information.";
+        return "You are now in dentist mode. Respond only with helpful, concise, accurate medical information. Try to keep the answer short and to the point.";
       case "default":
-        return "You are now in general practitioner mode. Respond only with helpful, concise, accurate medical information.";    }
+        return "You are now in general practitioner mode. Respond only with helpful, concise, accurate medical information. Try to keep the answer short and to the point.";    }
   };
 
   const generateBotResponse = async (history) => {
