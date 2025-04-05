@@ -9,6 +9,22 @@ const App = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const [showChatBot, setShowChatBot] = useState(false);
   const chatBodyRef = useRef();
+  const urlParams = new URLSearchParams(window.location.search);
+  const mode = urlParams.get("mode");
+  const getInitialPrompt = (mode) => {
+    switch (mode) {
+      case "pediatrician":
+        return "You are now in pediatrician mode. Respond only with helpful concise, accurate medical information. Assume the user is asking medical-related questions unless stated otherwise, keep it short and you can reply with a question to get further information about the user's symptoms. When you are sure about his/her diagnosis, reply with a medical advice.";
+      case "psychologist":
+        return "You are now in psychologist mode. Respond only with helpful concise, accurate medical information. Assume the user is asking medical-related questions unless stated otherwise, keep it short and you can reply with a question to get further information about the user's symptoms. When you are sure about his/her diagnosis, reply with a medical advice.";
+      case "dermatologist":
+          return "You are now in dermatologist mode. Respond only with helpful concise, accurate medical information. Assume the user is asking medical-related questions unless stated otherwise, keep it short and you can reply with a question to get further information about the user's symptoms. When you are sure about his/her diagnosis, reply with a medical advice."
+      case "dentist":
+        return "You are now in dentist mode. Respond only with helpful concise, accurate medical information. Assume the user is asking medical-related questions unless stated otherwise, keep it short and you can reply with a question to get further information about the user's symptoms. When you are sure about his/her diagnosis, reply with a medical advice."
+      default:
+        return null;
+    }
+  };
 
   const generateBotResponse = async (history) => {
     const updateHistory = (responseText) => {
@@ -62,8 +78,15 @@ const App = () => {
   return (
     <div id="app-container">
       <div id="title-container">
-        <h2 id="app-title">AI Sunday Drivers</h2>
-      </div>
+  <h2 id="app-title">AI Sunday Drivers</h2>
+  <div className="mode-buttons">
+    <button onClick={() => window.location.href = "?mode=dermatologist"}>Doctor</button>
+    <button onClick={() => window.location.href = "?mode=pediatrician"}>Pediatrician</button>
+    <button onClick={() => window.location.href = "?mode=psychologist"}>Psychologist</button>
+    <button onClick={() => window.location.href = "?mode=dentist"}>Dentist</button>
+  </div>
+</div>
+
       <div className={`bot-container ${showChatBot ? "show-chatbot" : ""}`}>
         <button onClick={() => setShowChatBot((prev) => !prev)} id="chatbot-toggler">
           <span className="material-symbols-rounded">mode_comment</span>
@@ -77,15 +100,21 @@ const App = () => {
               <ChatbotIcon />
               <h2 className="logo-text">Chatbot</h2>
             </div>
-            <button className="material-symbols-rounded">keyboard_arrow_down</button>
           </div>
 
           {/* Body */}
           <div ref={chatBodyRef} className="chat-body">
             <div className="message bot-message">
-              <ChatbotIcon />
-              <p className="message-text">Hello! I'm in doctor mode. Ask me anything medical.</p>
-            </div>
+  <ChatbotIcon />
+  <p className="message-text">
+    {mode === "General Practitioner" && "Hello! I'm your personal General Practitioner. Ask me anything medical."}
+    {mode === "pediatrician" && "Hello! I'm your personal Pediatrician . Ask me anything about child healthcare."}
+    {mode === "psychologist" && "Hello! I'm your personal Psychologist. Let's talk about mental health."}
+    {mode === "dentist" && "Hello! I'm your personal Dentist. Let's talk about your dental health."}
+    {!mode && "Hello! I'm your helpful assistant. How can I support you today?"}
+  </p>
+</div>
+
 
             {chatHistory.map((chat, index) => (
               <ChatMessage key={index} chat={chat} />
