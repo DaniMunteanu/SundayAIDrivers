@@ -20,7 +20,7 @@ const App = () => {
   const chatBodyRef = useRef();
   const [isRecording, setIsRecording] = useState(false);
   const urlParams = new URLSearchParams(window.location.search);
-  const [mode, setMode] = useState("default");
+  const mode = urlParams.get("mode") || "default";
   const [recognitionStopped, setRecognitionStopped] = useState(false);
 
   const getUserLocation = () => {
@@ -164,6 +164,7 @@ const App = () => {
     }
   }, [transcription, recognitionStopped]);
 
+
   return (
     <div id="app-container">
       <div id="title-container">
@@ -175,7 +176,7 @@ const App = () => {
     <div className="header-info">
       <DermatologistIcon />
       <button
-        onClick={() => setMode("dermatologist")}
+        onClick={() => window.location.href = "?mode=dermatologist"}
         className={mode === "dermatologist" ? "selected-mode" : ""}
       >
         Dermatologist
@@ -186,7 +187,7 @@ const App = () => {
     <div className="header-info">
       <PedriaticianIcon />
       <button
-        onClick={() => setMode("pediatrician")}
+        onClick={() => window.location.href = "?mode=pediatrician"}
         className={mode === "pediatrician" ? "selected-mode" : ""}
       >
         Pediatrician
@@ -197,7 +198,7 @@ const App = () => {
     <div className="header-info">
       <PsychologistIcon />
       <button
-        onClick={() => setMode("psychologist")}
+        onClick={() => window.location.href = "?mode=psychologist"}
         className={mode === "psychologist" ? "selected-mode" : ""}
       >
         Psychologist
@@ -208,7 +209,7 @@ const App = () => {
     <div className="header-info">
       <DentistIcon />
       <button
-        onClick={() => setMode("dentist")}
+        onClick={() => window.location.href = "?mode=dentist"}
         className={mode === "dentist" ? "selected-mode" : ""}
       >
         Dentist
@@ -223,7 +224,6 @@ const App = () => {
         <button
           onClick={() => {
             setShowChatBot((prev) => !prev);
-            setMode("default");
           }}
           id="chatbot-toggler"
         >
@@ -251,7 +251,7 @@ const App = () => {
               </p>
             </div>
 
-            {chatHistory.map((chat, index) => (
+            {Array.isArray(chatHistory) && chatHistory.map((chat, index) => (
               <ChatMessage key={index} chat={chat} />
             ))}
           </div>
