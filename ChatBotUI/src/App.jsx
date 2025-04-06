@@ -9,6 +9,7 @@ import DentistIcon from "./components/DentistIcon.jsx";
 import DermatologistIcon from "./components/DermatologistIcon.jsx";
 import PedriaticianIcon from "./components/PedriaticianIcon.jsx";
 import PsychologistIcon from "./components/PsychologistIcon.jsx";
+import GeneralPractitionerIcon from "./components/GeneralPractitionerIcon.jsx";
 
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -22,6 +23,14 @@ const App = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const mode = urlParams.get("mode") || "default";
   const [recognitionStopped, setRecognitionStopped] = useState(false);
+
+  const modeTitles = {
+  pediatrician: "Pediatrician",
+  default: "Family Doctor",
+  psychologist: "Psychologist",
+  dermatologist: "Dermatologist",
+  dentist: "Dentist"
+};
 
   const getUserLocation = () => {
     return new Promise((resolve, reject) => {
@@ -174,6 +183,15 @@ const App = () => {
       <div className="specialists-container"><ul className="mode-buttons">
   <li>
     <div className="header-info">
+      <GeneralPractitionerIcon />
+      <button
+        onClick={() => window.location.href = "?mode=default"}
+        className={mode === "default" ? "selected-mode" : ""}
+      >Family Doctor</button>
+    </div>
+  </li>
+  <li>
+    <div className="header-info">
       <DermatologistIcon />
       <button
         onClick={() => window.location.href = "?mode=dermatologist"}
@@ -224,6 +242,7 @@ const App = () => {
         <button
           onClick={() => {
             setShowChatBot((prev) => !prev);
+
           }}
           id="chatbot-toggler"
         >
@@ -235,7 +254,7 @@ const App = () => {
           <div className="chat-header">
             <div className="header-info">
               <ChatbotIcon />
-              <h2 className="logo-text">Chatbot</h2>
+              <h2 className="logo-text">{modeTitles[mode]}</h2>
             </div>
           </div>
 
@@ -244,7 +263,7 @@ const App = () => {
               <ChatbotIcon />
               <p className="message-text">
                 {mode === "pediatrician" && "Hello! I'm your personal Pediatrician. Ask me anything about child healthcare."}
-                {mode === "default" && "Hello! I'm your General Practitioner. Ask me anything about healthcare."}
+                {mode === "default" && "Hello! I'm your Family Doctor. Ask me anything about healthcare."}
                 {mode === "psychologist" && "Hello! I'm your personal Psychologist. Let's talk about mental health."}
                 {mode === "dermatologist" && "Hello! I'm your personal Dermatologist. Let's talk about your skin health."}
                 {mode === "dentist" && "Hello! I'm your personal Dentist. Let's talk about your dental health."}
