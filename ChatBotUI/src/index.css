@@ -165,7 +165,7 @@ body {
   pointer-events: none;
   bottom: 90px;
   right: 35px;
-  width: 800px;
+  width: 1300px;
   overflow: hidden;
   background: #FFF;
   border-radius: 15px;
@@ -208,6 +208,18 @@ body {
 .selected-mode:hover {
   background-color: #1c68c1;
   transform: scale(1.05);
+}
+
+.voice-icon svg {
+  height: 35px;
+  width: 35px;
+  padding: 6px;
+  flex-shrink: 0;
+  fill: 6D4FC2;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
 .header-info svg {
@@ -305,6 +317,12 @@ body {
   width: 100%;
   background: #FFF;
   padding: 15px 22px 20px;
+  justify-content: center;
+  gap: 20px;
+}
+
+.chat-footer {
+  display: flex;
 }
 
 .chat-footer .chat-form {
@@ -323,7 +341,7 @@ body {
 .chat-form .message-input {
   border: none;
   outline: none;
-  width: 100%;
+  width: 900px;
   background: none;
   height: 47px;
   padding: 0 17px;
