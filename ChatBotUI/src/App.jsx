@@ -54,15 +54,15 @@ const App = () => {
   const getInitialPrompt = (mode) => {
     switch (mode) {
       case "pediatrician":
-        return "You are now in pediatrician mode. Respond only with helpful, concise, accurate medical information...";
+        return "You are now in pediatrician mode. Respond only with helpful concise, accurate medical information. Assume the user is asking medical-related questions unless stated otherwise, keep it short and you can reply with a question to get further information about the user's symptoms. When you are sure about his/her diagnosis, reply with a medical advice."
       case "psychologist":
-        return "You are now in psychologist mode. Respond only with helpful, concise, accurate medical information...";
+        return "You are now in psychologist mode. Respond only with helpful concise, accurate medical information. Assume the user is asking medical-related questions unless stated otherwise, keep it short and you can reply with a question to get further information about the user's symptoms. When you are sure about his/her diagnosis, reply with a medical advice."
       case "dermatologist":
-        return "You are now in dermatologist mode. Respond only with helpful, concise, accurate medical information...";
+        return "You are now in dermatologist mode. Respond only with helpful concise, accurate medical information. Assume the user is asking medical-related questions unless stated otherwise, keep it short and you can reply with a question to get further information about the user's symptoms. When you are sure about his/her diagnosis, reply with a medical advice."
       case "dentist":
-        return "You are now in dentist mode. Respond only with helpful, concise, accurate medical information...";
+        return "You are now in dentist mode. Respond only with helpful concise, accurate medical information. Assume the user is asking medical-related questions unless stated otherwise, keep it short and you can reply with a question to get further information about the user's symptoms. When you are sure about his/her diagnosis, reply with a medical advice."
       case "default":
-        return "You are now in general practitioner mode. Respond only with helpful, concise, accurate medical information...";
+        return "You are now in general practitioner mode. Respond only with helpful concise, accurate medical information. Assume the user is asking medical-related questions unless stated otherwise, keep it short and you can reply with a question to get further information about the user's symptoms. When you are sure about his/her diagnosis, reply with a medical advice."
     }
   };
 
@@ -170,33 +170,53 @@ const App = () => {
         <h2 id="app-title">AI Sunday Drivers</h2>
       </div>
 
-      <div className="specialists-container">
-        <ul className="mode-buttons">
-          <li>
-            <div className="header-info">
-              <DermatologistIcon />
-              <button onClick={() => setMode("dermatologist")}>Dermatologist</button>
-            </div>
-          </li>
-          <li>
-            <div className="header-info">
-              <PedriaticianIcon />
-              <button onClick={() => setMode("pediatrician")}>Pediatrician</button>
-            </div>
-          </li>
-          <li>
-            <div className="header-info">
-              <PsychologistIcon />
-              <button onClick={() => setMode("psychologist")}>Psychologist</button>
-            </div>
-          </li>
-          <li>
-            <div className="header-info">
-              <DentistIcon />
-              <button onClick={() => setMode("dentist")}>Dentist</button>
-            </div>
-          </li>
-        </ul>
+      <div className="specialists-container"><ul className="mode-buttons">
+  <li>
+    <div className="header-info">
+      <DermatologistIcon />
+      <button
+        onClick={() => setMode("dermatologist")}
+        className={mode === "dermatologist" ? "selected-mode" : ""}
+      >
+        Dermatologist
+      </button>
+    </div>
+  </li>
+  <li>
+    <div className="header-info">
+      <PedriaticianIcon />
+      <button
+        onClick={() => setMode("pediatrician")}
+        className={mode === "pediatrician" ? "selected-mode" : ""}
+      >
+        Pediatrician
+      </button>
+    </div>
+  </li>
+  <li>
+    <div className="header-info">
+      <PsychologistIcon />
+      <button
+        onClick={() => setMode("psychologist")}
+        className={mode === "psychologist" ? "selected-mode" : ""}
+      >
+        Psychologist
+      </button>
+    </div>
+  </li>
+  <li>
+    <div className="header-info">
+      <DentistIcon />
+      <button
+        onClick={() => setMode("dentist")}
+        className={mode === "dentist" ? "selected-mode" : ""}
+      >
+        Dentist
+      </button>
+    </div>
+  </li>
+</ul>
+
       </div>
 
       <div className={`bot-container ${showChatBot ? "show-chatbot" : ""}`}>

@@ -7,6 +7,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Inter", sans-serif;
+  font-size: 15px;
 }
 
 body {
@@ -22,13 +23,13 @@ body {
 #app-title {
   color: #6D4FC2;
   font-size: 5rem;
-  font-weight: 1000;  
+  font-weight: 1000;
 }
 
 .specialists-container {
   background: #6D4FC2;
   display: flex;
-  width: 300px;
+  width: 400px;
   border-top-right-radius: 12px;
   border-bottom-right-radius: 12px;
 }
@@ -36,6 +37,23 @@ body {
 .options-list {
   align-items: center;
   justify-content: center;
+}
+
+.mode-buttons li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 100px;
+  width: 300px;
+  text-align: center;
+  list-style-type: none;
+}
+
+.mode-buttons li img {
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
 }
 
 .mode-buttons button {
@@ -48,6 +66,13 @@ body {
   background: none;
   margin-left: 20px;
 }
+.mode-button.selected-mode {
+  background-color: #2d89ef;
+  color: white;
+  font-weight: bold;
+  font-size: 1.6rem; /* Slightly larger font size for selected mode */
+  height: 50px; /* Ensure the height stays the same */
+}
 
 .mode-buttons li {
   list-style-type: none;
@@ -58,6 +83,8 @@ body {
   padding-top: 25px;
   font-size: 1.5rem;
 }
+
+
 .voice-button {
   background-color: #4caf50;
   color: white;
@@ -165,6 +192,23 @@ body {
   align-items: center;
   justify-content: space-between;
 }
+.selected-mode {
+  background-color: #2d89ef;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  padding: 6px 12px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  border: none;
+  font-size: 1.8rem; /* Slightly larger font size */
+}
+
+
+
+.selected-mode:hover {
+  background-color: #1c68c1;
+  transform: scale(1.05);
+}
 
 .header-info svg {
   height: 35px;
@@ -179,7 +223,7 @@ body {
 .header-info .logo-text {
   color: #FFF;
   font-size: 1.31rem;
-  font-weight: 600;  
+  font-weight: 600;
 }
 
 .chat-header button {
@@ -286,7 +330,7 @@ body {
   font-size: 0.95rem;
 }
 
-.chat-form button { 
+.chat-form button {
   height: 35px;
   width: 35px;
   border: none;
