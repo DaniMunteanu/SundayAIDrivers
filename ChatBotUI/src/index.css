@@ -90,7 +90,7 @@ body {
   color: white;
   border: none;
   padding: 8px 14px;
-  border-radius: 8px;
+  border-radius: 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -165,7 +165,7 @@ body {
   pointer-events: none;
   bottom: 90px;
   right: 35px;
-  width: 1300px;
+  width: 1025px;
   overflow: hidden;
   background: #FFF;
   border-radius: 15px;
@@ -215,7 +215,7 @@ body {
   width: 35px;
   padding: 6px;
   flex-shrink: 0;
-  fill: 6D4FC2;
+  fill: #6D4FC2;
   background-color: #4caf50;
   color: white;
   border-radius: 50%;
@@ -223,11 +223,12 @@ body {
 }
 
 .header-info svg {
+  margin-left: 5px;
   height: 35px;
   width: 35px;
   padding: 6px;
   flex-shrink: 0;
-  fill: 6D4FC2;
+  fill: #6D4FC2;
   background: #FFF;
   border-radius: 50%;
 }
